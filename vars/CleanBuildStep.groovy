@@ -1,0 +1,14 @@
+def call(Map config = [:]){
+    if(config.type == "be"){
+        bat "dotnet clean"
+    }else{
+        npm = "npm"
+        if(config.useNodeTool == true){
+            npm = "%NODE%\\npm"
+        }
+        bat "${npm} config set //registry.npmjs.org/:_authToken 09829b11-ac1f-443b-9020-bb4b0a4ac21a"
+        bat "${npm} install node-sass@4.14.1"
+        bat "${npm} install crypto-js"
+        bat "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
+    }
+}
