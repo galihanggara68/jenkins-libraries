@@ -13,7 +13,7 @@ def call(Map config = [:]){
     dir("./publish"){
         if(!fileExists('.gitignore')){
             echo "Init Repo"
-            bat "C:\\Users\\Administrator\\Documents\\scripts\\psrun.bat engine-init-repo.ps1 ./"
+            bat "%SCRIPTS%\\psrun.bat engine-init-repo.ps1 ./"
         }
     }
 }
