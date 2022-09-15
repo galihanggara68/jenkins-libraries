@@ -3,7 +3,7 @@ def call(Map config = [:]){
         bat 'dotnet build -c Release'
         bat 'dotnet publish -c Release --output ./publish/release'
         configFileProvider([configFile(fileId: 'dockerfile-be', targetLocation: 'publish/release/Dockerfile', variable: 'dockerfile')]) {
-            bat "echo ENTRYPOINT ['dotnet', ${config.executableName}.dll] >> publish\\release\\Dockerfile"
+            bat "echo ENTRYPOINT ['dotnet', '${config.executableName}.dll'] >> publish\\release\\Dockerfile"
         }
         
         stash includes: 'publish/**', name: 'app'
