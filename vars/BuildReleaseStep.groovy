@@ -2,7 +2,7 @@ def call(Map config = [:]){
     if(config.executableName){
         bat 'dotnet build -c Release'
         bat 'dotnet publish -c Release --output ./publish/release'
-        configFileProvider([configFile(fileId: 'dockerfile-be', targetLocation: 'publish/release/Dockerfile', variable: 'dockerfile'), configFile(fileId: 'swagger-xml', targetLocation: "publish/release/Dockerfile/${config.executableName}.xml", variable: 'swagger')]) {
+        configFileProvider([configFile(fileId: 'dockerfile-be', targetLocation: 'publish/release/Dockerfile', variable: 'dockerfile'), configFile(fileId: 'swagger-xml', targetLocation: "publish/release/${config.executableName}.xml", variable: 'swagger')]) {
             bat "echo ENTRYPOINT [\"dotnet\", \"${config.executableName}.dll\"] >> publish\\release\\Dockerfile"
         }
         
