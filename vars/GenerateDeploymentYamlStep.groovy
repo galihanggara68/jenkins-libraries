@@ -23,8 +23,8 @@ def call(Map config = [:]){
         service.metadata.name = config.deploymentName
         service.metadata.namespace = config.namespace
         service.spec.selector.app = config.deploymentName
-        service.spec.ports.port = config.port
-        service.spec.ports.targetPort = config.targetPort
+        service.spec.ports[0].port = config.port
+        service.spec.ports[0].targetPort = config.targetPort
         service.spec.type = config.serviceType
         
         bat "del service.yaml"
