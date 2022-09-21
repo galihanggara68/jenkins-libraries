@@ -42,9 +42,7 @@ def call(Map config = [:]){
         writeYaml(data: configmap, file: "configmap.yaml")
 
         bat "type deployment.yaml"
-        bat "echo ---"
         bat "type service.yaml"
-        bat "echo ---"
         bat "type configmap.yaml"
     }
 }
