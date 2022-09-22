@@ -38,7 +38,8 @@ def call(Map config = [:]){
         def configmap = readYaml(file: 'configmap.yaml')
         configmap.metadata.name = config.deploymentName+"-appsettings"
         configmap.metadata.namespace = config.namespace
-        Map configData = [(config.configMapFileName): "{}"]
+        def data = config.configPath ? readFile(config.configPath) : "{}"
+        Map configData = [(config.configMapFileName): data]
         configmap.data = configData
         
         
