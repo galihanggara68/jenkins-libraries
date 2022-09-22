@@ -1,5 +1,8 @@
 def call(Map config = [:]){
     configFileProvider([configFile(fileId: 'kube-deployment-yaml', targetLocation: './deployment.yaml', variable: 'deployment'), configFile(fileId: 'kube-service-yaml', targetLocation: './service.yaml', variable: 'service'), configFile(fileId: 'kube-configmap-yaml', targetLocation: './configmap.yaml', variable: 'configmap')]) {
+        def matchers = ~/.*-(frontend|fe)/
+        config.type = config.type ? config.type : (matchers.matcher(config.deploymentName).matches() ? "fe" : "be")
+        
         // Namespace
         Map namespace = [apiVersion: "v1", kind: "Namespace", metadata: [name: config.namespace]]
         writeYaml(data: namespace, file: "namespace.yaml")
