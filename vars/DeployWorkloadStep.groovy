@@ -15,7 +15,7 @@ def call(Map config = [:]){
 
             if(config.autoRestart){
                 def deployment = readYaml(file: "deployment.yaml")
-                bat "kubectl rollout restart deployments/${deployment.metadata.labels.app}"
+                bat "kubectl rollout restart deployments/${deployment.metadata.labels.app} -n ${deployment.metadata.namespace}"
             }
         }
     }
