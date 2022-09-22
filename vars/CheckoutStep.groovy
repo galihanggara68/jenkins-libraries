@@ -1,5 +1,5 @@
 def call(Map config = [:]){
-    if(config.CleanWorkspace == true){
+    if(config.cleanWorkspace){
         cleanWs()
     }
     withCredentials([usernamePassword(credentialsId: config.credentialsId, passwordVariable: 'PASS', usernameVariable: 'USER')]) {
