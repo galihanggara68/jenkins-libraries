@@ -16,8 +16,8 @@ def call(Map config = [:]){
         deployment.spec.template.spec.containers[0].name = config.deploymentName
         deployment.spec.template.spec.containers[0].image = config.imageName
         deployment.spec.template.spec.containers[0].volumeMounts[0].name = config.deploymentName+"-volume"
-        deployment.spec.template.spec.containers[0].volumeMounts[0].mountPath = "/app/appsettings.json"
-        deployment.spec.template.spec.containers[0].volumeMounts[0].subPath = "appsettings.json"
+        deployment.spec.template.spec.containers[0].volumeMounts[0].mountPath = (config.configContainerPath ? config.configContainerPath : (config.type == 'fe' ? "/usr/share/nginx/html/assets/config/${config.configMapFileName}" : "/app/${config.configMapFileName}"))
+        deployment.spec.template.spec.containers[0].volumeMounts[0].subPath = config.configMapFileName
         
         bat "del deployment.yaml"
         writeYaml(data: deployment, file: "deployment.yaml")
