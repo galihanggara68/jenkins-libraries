@@ -1,5 +1,9 @@
 def call(Map config = [:]){
     configFileProvider([configFile(fileId: 'kube-deployment-yaml', targetLocation: './deployment.yaml', variable: 'deployment'), configFile(fileId: 'kube-service-yaml', targetLocation: './service.yaml', variable: 'service'), configFile(fileId: 'kube-configmap-yaml', targetLocation: './configmap.yaml', variable: 'configmap')]) {
+        // Namespace
+        Map namespace = [apiVersion: "v1", kind: "Namespace", metadata: [name: config.namespace]]
+        writeYaml(data: namespace, file: "namespace.yaml")
+        
         // Deployment
         def deployment = readYaml(file: 'deployment.yaml')
         deployment.metadata.name = config.deploymentName
