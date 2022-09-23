@@ -8,7 +8,7 @@ def call(Map config = [:]){
         
         stash includes: 'publish/**', name: 'app'
     }else{
-        bat "%TOOLS%\\jenkins.plugins.nodejs.tools.NodeJSInstallation\\node14\\node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --configuration=https_env --base-href /"
+        bat "%NODE%/node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --configuration=https_env --base-href /"
         configFileProvider([configFile(fileId: config.dockerfile ? config.dockerfile : 'dockerfile-fe', targetLocation: 'dist/Dockerfile', variable: 'dockerfile'), configFile(fileId: config.nginxconfig ? config.nginxconfig : 'nginx-fe', targetLocation: "dist/default.conf", variable: 'nginx')]) {
             bat "env copied"
         }
