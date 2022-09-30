@@ -11,7 +11,7 @@ def call(Map config = [:]){
         def baseHref = config.baseHref ? config.baseHref : "/"
         bat "%NODE%/node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --base-href ${baseHref} --deploy-url ${baseHref}"
         configFileProvider([configFile(fileId: config.dockerfile ? config.dockerfile : 'dockerfile-fe', targetLocation: 'dist/Dockerfile', variable: 'dockerfile'), configFile(fileId: config.nginxconfig ? config.nginxconfig : 'nginx-fe', targetLocation: "dist/default.conf", variable: 'nginx')]) {
-            bat "env copied"
+            bat "echo env copied"
         }
         stash includes: 'dist/**', name: 'app'
     }
