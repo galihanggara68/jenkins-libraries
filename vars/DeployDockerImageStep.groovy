@@ -13,7 +13,12 @@ def call(Map config = [:]){
         dockerImageRemote.push()
         dockerImageRemote.push("cloud")
     }else if(config.cloudType == "AWS"){
-        echo "AWS Provider is under maintenance or unavailable"
+        withCredentials([file(credentialsId: "${config.credentialsId}", variable: 'FILE')]) {
+            sh "cat $FILE | docker login --username AWS --password-stdin 807879955963.dkr.ecr.ap-southeast-1.amazonaws.com"
+        }
+        dockerImageRemote = docker.build "${config.imageName}:build-${env.BUILD_ID}"
+        dockerImageRemote.push()
+        dockerImageRemote.push("cloud")
     }else if(config.cloudType == "Azure"){
         echo "Azure Provider is under maintenance or unavailable"
     }
