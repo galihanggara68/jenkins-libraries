@@ -9,11 +9,14 @@ def call(Map config = [:]){
             checkout([$class: 'TeamFoundationServerScm', projectPath: config.projectPath, serverUrl: config.serverUrl, useOverwrite: true, useUpdate: true, userName: "$USER", password: hudson.util.Secret.fromString("$PASS"), workspaceName: 'Hudson-${JOB_NAME}-${NODE_NAME}-CLIENT'])
         }
     }
-    powershell "md -Force publish"
-    dir("./publish"){
-        if(!fileExists('.gitignore')){
-            echo "Init Repo"
-            bat "%SCRIPTS%\\psrun.bat engine-init-repo.ps1 ./"
+    if(!isUnix()){
+        powershell "md -Force publish"
+        dir("./publish"){
+            if(!fileExists('.gitignore')){
+                echo "Init Repo"
+                bat "%SCRIPTS%\\psrun.bat engine-init-repo.ps1 ./"
+            }
         }
     }
+    
 }

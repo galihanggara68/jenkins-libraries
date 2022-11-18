@@ -1,14 +1,30 @@
 def call(Map config = [:]){
-    if(config.type == "be"){
-        bat "dotnet clean"
-    }else{
-        npm = "npm"
-        if(config.useNodeTool == true){
-            npm = "%NODE%\\npm"
+    if(isUnix()){
+        if(config.type == "be"){
+            sh "dotnet clean"
+        }else{
+            npm = "npm"
+            if(config.useNodeTool == true){
+                npm = "$NODE/npm"
+            }
+            sh "${npm} config set //registry.npmjs.org/:_authToken 09829b11-ac1f-443b-9020-bb4b0a4ac21a"
+            sh "${npm} install node-sass@4.14.1"
+            sh "${npm} install crypto-js"
+            sh "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
         }
-        bat "${npm} config set //registry.npmjs.org/:_authToken 09829b11-ac1f-443b-9020-bb4b0a4ac21a"
-        bat "${npm} install node-sass@4.14.1"
-        bat "${npm} install crypto-js"
-        bat "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
+    }else{
+        if(config.type == "be"){
+            bat "dotnet clean"
+        }else{
+            npm = "npm"
+            if(config.useNodeTool == true){
+                npm = "%NODE%\\npm"
+            }
+            bat "${npm} config set //registry.npmjs.org/:_authToken 09829b11-ac1f-443b-9020-bb4b0a4ac21a"
+            bat "${npm} install node-sass@4.14.1"
+            bat "${npm} install crypto-js"
+            bat "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
+        }
     }
+    
 }
