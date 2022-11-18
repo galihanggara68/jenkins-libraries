@@ -3,11 +3,11 @@ def call(Map config = [:]){
         withCredentials([string(credentialsId: config.credentialsId, variable: 'TOKEN')]) {
             if(isUnix()){
                 if(config.type == "be"){
-                    sh "dotnet $TOOL/SonarScanner.MSBuild.dll begin /key:${config.projectKey} /d:sonar.login=%TOKEN%"
-                    sh 'dotnet build'
-                    sh "dotnet $TOOL/SonarScanner.MSBuild.dll end /d:sonar.login=%TOKEN%"
+                    sh "$DOTNET/dotnet $SONAR/SonarScanner.MSBuild.dll begin /key:${config.projectKey} /d:sonar.login=%TOKEN%"
+                    sh "$DOTNET/dotnet build"
+                    sh "$DOTNET/dotnet $SONAR/SonarScanner.MSBuild.dll end /d:sonar.login=%TOKEN%"
                 }else{
-                    sh "$TOOL/bin/sonar-scanner.bat -Dsonar.projectKey=${config.projectKey} -Dsonar.login=%TOKEN%"
+                    sh "$SONAR/bin/sonar-scanner -Dsonar.projectKey=${config.projectKey} -Dsonar.login=%TOKEN%"
                 }
             }else{
                 if(config.type == "be"){
