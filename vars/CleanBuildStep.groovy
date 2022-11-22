@@ -1,7 +1,7 @@
 def call(Map config = [:]){
     if(isUnix()){
         if(config.type == "be"){
-            sh "dotnet clean"
+            sh "$DOTNET/dotnet clean"
         }else{
             npm = "npm"
             if(config.useNodeTool == true){
