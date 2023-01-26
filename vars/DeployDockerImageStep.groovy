@@ -21,11 +21,10 @@ def call(Map config = [:]){
         dockerImageRemote.push("cloud")
     }else if(config.cloudType == "AWS CLI"){
         withCredentials([usernamePassword(credentialsId: "${config.credentialsId}", passwordVariable: 'SECRET', usernameVariable: 'KEY')]) {
-            sh "echo [default] > ~/credentials.cnf"
-            sh "echo aws_secret_access_key = $KEY >> ~/credentials.cnf"
-            sh "echo aws_secret_access_secret = $SECRET >> ~/credentials.cnf"
-            sh "echo region = ${config.regionId} >> ~/credentials.cnf"
-            sh "AWS_CONFIG_FILE=~/credentials.cnf aws ecr get-login-password > ~/aws_creds.txt"
+            sh "aws configure set aws_secret_access_key $KEY"
+            sh "aws configure set aws_secret_access_secret $SECRET"
+            sh "aws configure set region ${config.regionId}"
+            sh "aws ecr get-login-password > ~/aws_creds.txt"
             sh "cat ~/aws_creds.txt | docker login --username AWS --password-stdin ${config.registryURL}"
         }
         dockerImageRemote = docker.build "${config.imageName}:build-${env.BUILD_ID}"
