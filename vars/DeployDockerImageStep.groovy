@@ -20,7 +20,7 @@ def call(Map config = [:]){
         dockerImageRemote.push()
         dockerImageRemote.push("cloud")
     }else if(config.cloudType == "AWS CLI"){
-        if(!env.AWS_DEFAULT_REGION.notBlank){
+        if(!env.AWS_DEFAULT_REGION){
             env.AWS_DEFAULT_REGION = config.regionId
         }
         withCredentials([usernamePassword(credentialsId: "${config.credentialsId}", passwordVariable: 'SECRET', usernameVariable: 'KEY')]) {
