@@ -23,7 +23,6 @@ def call(Map config = [:]){
         withCredentials([usernamePassword(credentialsId: "${config.credentialsId}", passwordVariable: 'SECRET', usernameVariable: 'KEY')]) {
             sh "aws configure set aws_access_key_id $KEY"
             sh "aws configure set aws_secret_access_key $SECRET"
-            sh "aws configure set region ${config.regionId}"
             sh "aws ecr get-login-password > ~/aws_creds.txt"
             sh "cat ~/aws_creds.txt | docker login --username AWS --password-stdin ${config.registryURL}"
         }
