@@ -16,12 +16,10 @@ def call(Map config = [:]){
             }
         }
 
-        sh "kubectl apply -f namespace.yaml"
-
-        sh "kubectl apply -f deployment.yaml"
-        sh "kubectl apply -f service.yaml"
-
         if(config.resetConfigmap){
+            sh "kubectl apply -f namespace.yaml"
+            sh "kubectl apply -f deployment.yaml"
+            sh "kubectl apply -f service.yaml"
             sh "kubectl apply -f configmap.yaml"
         }
 
