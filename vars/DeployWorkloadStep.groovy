@@ -1,5 +1,5 @@
 def call(Map config = [:]){
-    if(config.cloudType.notBlank){
+    if(config.cloudType){
         if(config.cloudType == "Google Cloud"){
             withCredentials([file(credentialsId: "${config.credentialsId}", variable: 'FILE')]) {
                 sh "gcloud auth activate-service-account ${config.serviceAccountName} --key-file=%FILE%"
