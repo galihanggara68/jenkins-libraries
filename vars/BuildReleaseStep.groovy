@@ -1,3 +1,12 @@
+/*
+    Build project step
+    
+    Parameters
+        executableName : dll file name as entry point
+        dockerfile : dockerfile config id (default: dockerfile-fe/dockerfile-be)
+        baseHref : base href of FE project (default: /)
+        nginxconfig : nginx config id to override default nginx config (default: nginx-fe)
+*/
 def call(Map config = [:]){
     if(isUnix()){
         if(config.executableName){

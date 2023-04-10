@@ -1,3 +1,13 @@
+/*
+    Deploy/push Docker image to Container Registry
+
+    parameters :
+        credentialsId : Credentials id for login to Container Registry
+        cloudType : Cloud provider name (Alibaba Cloud, Google Cloud, AWS, AWS CLI) -> AWS use file credentials, AWS CLI use access key&secret
+        registryURL : Container Registry endpoint URL
+        imageName : Docker image name to push to container registry
+        regionId : (AWS CLI) AWS Region ID
+*/
 def call(Map config = [:]){
     if(config.cloudType == "Alibaba Cloud"){
         docker.withRegistry("${config.registryURL}", "${config.credentialsId}") {

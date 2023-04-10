@@ -1,3 +1,12 @@
+/*
+    SonarQube analysis step
+
+    parameters :
+        sonarQubeEnv : SonarQube environment name
+        credentialsId : SonarQube credentialsId for login to SonarQube
+        type : Project type (fe/be)
+        projectKey : SonarQube Project key
+*/
 def call(Map config = [:]){
     withSonarQubeEnv(config.sonarQubeEnv){
         withCredentials([string(credentialsId: config.credentialsId, variable: 'TOKEN')]) {

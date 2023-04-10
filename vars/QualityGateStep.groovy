@@ -1,3 +1,9 @@
+/*
+    Quality gate step
+
+    parameters :
+    
+*/
 def call(){
     def qualitygate = waitForQualityGate()
     if (qualitygate.status != "OK") {

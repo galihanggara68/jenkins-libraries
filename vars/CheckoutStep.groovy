@@ -1,3 +1,14 @@
+/*
+    Checkout step from version control
+
+    parameters :
+        credentialsId : credentials id for checkout/pulling repo from remote
+        serverUrl : TFS collection URL
+        projectPath : TFS project path
+        url : GIT repo URL
+        branchName : GIT branch name to pull
+        workspaceName : custom workspace name (default: Hudson-${JOB_NAME}-${NODE_NAME}-CLIENT)
+*/
 def call(Map config = [:]){
     if(config.cleanWorkspace){
         cleanWs()

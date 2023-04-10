@@ -1,3 +1,15 @@
+/*
+    Deploy application workload to kubernetes
+
+    parameters : 
+        credentialsId : Credentials id for login to kubernetes cluster
+        cloudType : Cloud provider (Google Cloud, AWS CLI)
+        zone : (Google Cloud) zone id
+        clusterName : Kubernetes cluster name
+        serviceAccountName : (Google Cloud) IAM service account name for kubernetes deployment
+        regionId : (AWS CLI) EKS region id
+        autoRestart : Auto restart deployment after deploy
+*/
 def call(Map config = [:]){
     if(config.cloudType){
         if(config.cloudType == "Google Cloud"){

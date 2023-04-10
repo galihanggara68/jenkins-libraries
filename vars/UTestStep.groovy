@@ -1,3 +1,9 @@
+/*
+    Unit test step
+
+    parameters :
+        testParams : Optional parameters to pass angular test
+*/
 def call(Map config = [:]){
     if(config.type == "be"){
         bat 'dotnet test --collect "Code Coverage" --logger trx -r VSTestResult'

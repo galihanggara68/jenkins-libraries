@@ -1,3 +1,9 @@
+/*
+    Push to sharepoint step
+
+    parameters :
+    
+*/
 def call(Map config = [:]){
     dir("./$BUILD_PATH"){
         bat "git add ."

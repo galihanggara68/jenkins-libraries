@@ -1,3 +1,24 @@
+/*
+    Generate deployment yaml file for kubernetes deployment
+
+    parameters : 
+        type : Project type (fe/be)
+        deploymentName : Kubernetes deployment/workload name
+        namespace : Namespace of workload to deploy
+        imageName : Image name to use in container
+
+        # Deployment
+        configMapFileName : Configuration file name in container
+        configContainerPath (optional) : Path of full path config in container
+
+        # Service
+        port : Port to expose in service
+        targetPort : Container forwarded port
+        serviceType : Kube Service Type
+        
+        # Configmap
+        configPath : Config file name to store in configmap
+*/
 def call(Map config = [:]){
     configFileProvider([configFile(fileId: 'kube-deployment-yaml', targetLocation: './deployment.yaml', variable: 'deployment'), configFile(fileId: 'kube-service-yaml', targetLocation: './service.yaml', variable: 'service'), configFile(fileId: 'kube-configmap-yaml', targetLocation: './configmap.yaml', variable: 'configmap')]) {
         def matchers = ~/.*-(frontend|fe)/
