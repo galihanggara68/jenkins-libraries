@@ -9,16 +9,21 @@
         serviceAccountName : (Google Cloud) IAM service account name for kubernetes deployment
         regionId : (AWS CLI) EKS region id
         autoRestart : Auto restart deployment after deploy
+
+    credentialsId :
+        Google Coud : file
+        AWS CLI : username&password
+        
 */
-def call(Map config = [:]){
-    if(config.cloudType){
-        if(config.cloudType == "Google Cloud"){
+def call(Map config = [:]) {
+    if (config.cloudType) {
+        if (config.cloudType == "Google Cloud") {
             withCredentials([file(credentialsId: "${config.credentialsId}", variable: 'FILE')]) {
                 sh "gcloud auth activate-service-account ${config.serviceAccountName} --key-file=%FILE%"
                 sh "gcloud container clusters get-credentials ${config.clusterName} --zone ${config.zone}"
             }
-        }else if(config.cloudType == "AWS CLI"){
-            if(!env.AWS_DEFAULT_REGION){
+        } else if (config.cloudType == "AWS CLI") {
+            if (!env.AWS_DEFAULT_REGION) {
                 env.AWS_DEFAULT_REGION = config.regionId
             }
             withCredentials([usernamePassword(credentialsId: "${config.credentialsId}", passwordVariable: 'SECRET', usernameVariable: 'KEY')]) {
@@ -28,17 +33,16 @@ def call(Map config = [:]){
             }
         }
 
-        if(config.resetConfigmap){
+        if (config.resetConfigmap) {
             sh "kubectl apply -f namespace.yaml"
             sh "kubectl apply -f deployment.yaml"
             sh "kubectl apply -f service.yaml"
             sh "kubectl apply -f configmap.yaml"
         }
 
-        if(config.autoRestart){
+        if (config.autoRestart) {
             def deployment = readYaml(file: "deployment.yaml")
             sh "kubectl rollout restart deployments/${deployment.metadata.labels.app} -n ${deployment.metadata.namespace}"
         }
     }
-    
 }
