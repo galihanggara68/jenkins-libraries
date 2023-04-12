@@ -26,8 +26,9 @@ def call(Map config = [:]) {
         
         // Namespace
         Map namespace = [apiVersion: "v1", kind: "Namespace", metadata: [name: config.namespace]]
-        bat "del namespace.yaml"
-        writeYaml(data: namespace, file: "namespace.yaml")
+        if (!fileExists('namespace.yaml')) {
+            writeYaml(data: namespace, file: "namespace.yaml")
+        }
         
         // Deployment
         def deployment = readYaml(file: 'deployment.yaml')
@@ -38,11 +39,11 @@ def call(Map config = [:]) {
         deployment.spec.template.metadata.labels.app = config.deploymentName
         deployment.spec.template.spec.volumes[0].name = config.deploymentName + "-volume"
         deployment.spec.template.spec.volumes[0].configMap.name = config.deploymentName 
-            + "-appsettings"
+ + "-appsettings"
         deployment.spec.template.spec.containers[0].name = config.deploymentName
         deployment.spec.template.spec.containers[0].image = config.imageName
         deployment.spec.template.spec.containers[0].volumeMounts[0].name = config.deploymentName 
-            + "-volume"
+ + "-volume"
         deployment.spec.template.spec.containers[0].volumeMounts[0].mountPath = (config.configContainerPath ? config.configContainerPath: (config.type == 'fe' ? "/usr/share/nginx/html/assets/config/${config.configMapFileName}": "/app/${config.configMapFileName}"))
         deployment.spec.template.spec.containers[0].volumeMounts[0].subPath = config.configMapFileName
         
