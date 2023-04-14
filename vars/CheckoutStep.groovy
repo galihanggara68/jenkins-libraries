@@ -1,4 +1,4 @@
-/*
+/**@
     Checkout step from version control
 
     parameters :

@@ -1,11 +1,11 @@
-/*
+/**@
     Push to sharepoint step
 
     parameters :
     
 */
-def call(Map config = [:]){
-    dir("./$BUILD_PATH"){
+def call(Map config = [:]) {
+    dir("./$BUILD_PATH") {
         bat "git add ."
         bat "git diff --cached --name-only > list.tmp"
         bat "%SCRIPTS%\\psrun.bat get-diff.ps1 $BUILD_NUMBER \"$WORKSPACE\\$BUILD_PATH\" "

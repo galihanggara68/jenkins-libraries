@@ -1,4 +1,4 @@
-/*
+/**@
     Generate deployment yaml file for kubernetes deployment
 
     parameters : 

@@ -1,4 +1,4 @@
-/*
+/**@
     Clean project
 
     parameters : 
@@ -6,13 +6,13 @@
         authToken : npm auth token
         useNodeTool : use npm predefined tool in environment (default: false)
 */
-def call(Map config = [:]){
-    if(isUnix()){
-        if(config.type == "be"){
+def call(Map config = [:]) {
+    if (isUnix()) {
+        if (config.type == "be") {
             sh "$DOTNET/dotnet clean"
-        }else{
+        } else  {
             npm = "npm"
-            if(config.useNodeTool == true){
+            if (config.useNodeTool == true) {
                 npm = "$NODE/npm"
             }
             sh "${npm} config set //registry.npmjs.org/:_authToken ${config.authToken}"
@@ -20,12 +20,12 @@ def call(Map config = [:]){
             sh "${npm} install crypto-js"
             sh "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
         }
-    }else{
-        if(config.type == "be"){
+    } else  {
+        if (config.type == "be") {
             bat "dotnet clean"
-        }else{
+        } else  {
             npm = "npm"
-            if(config.useNodeTool == true){
+            if (config.useNodeTool == true) {
                 npm = "%NODE%\\npm"
             }
             bat "${npm} config set //registry.npmjs.org/:_authToken ${config.authToken}"
@@ -34,5 +34,4 @@ def call(Map config = [:]){
             bat "${npm} install --prefer-offline --legacy-peer-deps --no-audit --progress=false"
         }
     }
-    
 }

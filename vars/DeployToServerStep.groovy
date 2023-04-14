@@ -1,4 +1,4 @@
-/*
+/**@
     Deploy to server step
 
     parameters :

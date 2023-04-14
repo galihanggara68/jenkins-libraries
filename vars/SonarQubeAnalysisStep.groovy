@@ -1,4 +1,4 @@
-/*
+/**@
     SonarQube analysis step
 
     parameters :
@@ -15,15 +15,15 @@ def call(Map config = [:]) {
                     sh "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 $DOTNET/dotnet $SONAR/SonarScanner.MSBuild.dll begin /key:${config.projectKey} /d:sonar.login=$TOKEN"
                     sh "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 $DOTNET/dotnet build"
                     sh "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 $DOTNET/dotnet $SONAR/SonarScanner.MSBuild.dll end /d:sonar.login=$TOKEN"
-                } else  {
+                } else {
                     sh "$SONAR/bin/sonar-scanner -Dsonar.projectKey=${config.projectKey} -Dsonar.login=$TOKEN"
                 }
-            } else  {
+            } else {
                 if (config.type == "be") {
                     bat "dotnet %TOOLS%\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\SonarScanner_.Net_Framework_Core\\SonarScanner.MSBuild.dll begin /key:${config.projectKey} /d:sonar.login=%TOKEN%"
                     bat 'dotnet build'
                     bat "dotnet %TOOLS%\\hudson.plugins.sonar.MsBuildSQRunnerInstallation\\SonarScanner_.Net_Framework_Core\\SonarScanner.MSBuild.dll end /d:sonar.login=%TOKEN%"
-                } else  {
+                } else {
                     bat "%TOOLS%\\hudson.plugins.sonar.SonarRunnerInstallation\\SonarQube_Scanner\\bin\\sonar-scanner.bat -Dsonar.projectKey=${config.projectKey} -Dsonar.login=%TOKEN%"
                 }
             }

@@ -1,4 +1,4 @@
-/*
+/**@
     Deploy/push Docker image to Container Registry
 
     parameters :
