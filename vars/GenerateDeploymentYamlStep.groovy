@@ -37,9 +37,8 @@ def call(Map config = [:]) {
         deployment.metadata.labels.app = config.deploymentName
         deployment.spec.selector.matchLabels.app = config.deploymentName
         deployment.spec.template.metadata.labels.app = config.deploymentName
-        deployment.spec.template.spec.volumes[0].name = config.deploymentName + "-volume"
-        deployment.spec.template.spec.volumes[0].configMap.name = config.deploymentName 
- + "-appsettings"
+        deployment.spec.template.spec.volumes[0].name = """${config.deploymentName}-volume"""
+        deployment.spec.template.spec.volumes[0].configMap.name = """${config.deploymentName}-appsettings"""
         deployment.spec.template.spec.containers[0].name = config.deploymentName
         deployment.spec.template.spec.containers[0].image = config.imageName
         deployment.spec.template.spec.containers[0].volumeMounts[0].name = config.deploymentName 
@@ -64,7 +63,7 @@ def call(Map config = [:]) {
 
         // ConfigMap
         def configmap = readYaml(file: 'configmap.yaml')
-        configmap.metadata.name = config.deploymentName + "-appsettings"
+        configmap.metadata.name = """${config.deploymentName}-appsettings"""
         configmap.metadata.namespace = config.namespace
         def data = config.configPath ? readFile(config.configPath): "{}"
         Map configData = [(config.configMapFileName): data]
