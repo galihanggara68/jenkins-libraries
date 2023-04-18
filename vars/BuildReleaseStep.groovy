@@ -6,6 +6,7 @@
         dockerfile : dockerfile config id (default: dockerfile-fe/dockerfile-be)
         baseHref : base href of FE project (default: /)
         nginxconfig : nginx config id to override default nginx config (default: nginx-fe)
+        useNodeTool : use nodejs from environment tool
 */
 def call(Map config = [:]) {
     if (isUnix()) {
@@ -17,15 +18,19 @@ def call(Map config = [:]) {
             }
             
             stash includes: 'publish/**', name: 'app'
-        } else  {
+        } else {
+            npm = "npm"
+            if (config.useNodeTool == true) {
+                npm = "$NODE/npm"
+            }
             def baseHref = config.baseHref ? config.baseHref: "/"
-            sh "$NODE/node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --base-href ${baseHref} --deploy-url ${baseHref}"
+            sh "${npm} --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --base-href ${baseHref} --deploy-url ${baseHref}"
             configFileProvider([configFile(fileId: config.dockerfile ? config.dockerfile: 'dockerfile-fe', targetLocation: 'dist/Dockerfile', variable: 'dockerfile'), configFile(fileId: config.nginxconfig ? config.nginxconfig: 'nginx-fe', targetLocation: "dist/default.conf", variable: 'nginx')]) {
                 sh "echo env copied"
             }
             stash includes: 'dist/**', name: 'app'
         }
-    } else  {
+    } else {
         if (config.executableName) {
             bat 'dotnet build -c Release'
             bat 'dotnet publish -c Release --output ./publish/release'
@@ -34,9 +39,13 @@ def call(Map config = [:]) {
             }
             
             stash includes: 'publish/**', name: 'app'
-        } else  {
+        } else {
+            npm = "npm"
+            if (config.useNodeTool == true) {
+                npm = "$NODE/npm"
+            }
             def baseHref = config.baseHref ? config.baseHref: "/"
-            bat "%NODE%/node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --base-href ${baseHref} --deploy-url ${baseHref}"
+            bat "${npm} --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --base-href ${baseHref} --deploy-url ${baseHref}"
             configFileProvider([configFile(fileId: config.dockerfile ? config.dockerfile: 'dockerfile-fe', targetLocation: 'dist/Dockerfile', variable: 'dockerfile'), configFile(fileId: config.nginxconfig ? config.nginxconfig: 'nginx-fe', targetLocation: "dist/default.conf", variable: 'nginx')]) {
                 bat "echo env copied"
             }
