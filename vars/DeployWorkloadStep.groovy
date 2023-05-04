@@ -8,6 +8,7 @@
         clusterName : Kubernetes cluster name
         serviceAccountName : (Google Cloud) IAM service account name for kubernetes deployment
         regionId : (AWS CLI) EKS region id
+        resetConfigmap: reset configmap and all deployment to default value (default: false)
         autoRestart : Auto restart deployment after deploy
 
     credentialsId :
